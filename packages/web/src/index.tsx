@@ -1,17 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { ApolloProvider } from "react-apollo";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { ApolloProvider } from 'react-apollo';
 // import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-import { client } from "./apollo";
-import { Routes } from "./routes";
+import * as serviceWorker from './serviceWorker';
+import { client } from './apollo';
+import { Routes } from './routes';
+import './index.css';
 
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Routes />
     {/* <App /> */}
   </ApolloProvider>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change
