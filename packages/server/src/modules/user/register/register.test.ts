@@ -1,15 +1,14 @@
-import { Connection } from "typeorm";
-import * as faker from "faker";
-
-import { User } from "../../../entity/User";
+import { Connection } from 'typeorm';
+import * as faker from 'faker';
 import {
-  duplicateEmail,
   emailNotLongEnough,
   invalidEmail,
   passwordNotLongEnough
-} from "./errorMessages";
-import { TestClient } from "../../../utils/TestClient";
-import { createTestConn } from "../../../testUtils/createTestConn";
+} from '@abb/common';
+import { User } from '../../../entity/User';
+import { duplicateEmail } from './errorMessages';
+import { TestClient } from '../../../utils/TestClient';
+import { createTestConn } from '../../../testUtils/createTestConn';
 
 faker.seed(Date.now() + 5);
 const email = faker.internet.email();
@@ -25,8 +24,8 @@ afterAll(async () => {
   conn.close();
 });
 
-describe("Register user", async () => {
-  it("check for duplicate emails", async () => {
+describe('Register user', async () => {
+  it('check for duplicate emails', async () => {
     // make sure we can register a user
     const response = await client.register(email, password);
     expect(response.data).toEqual({ register: null });
@@ -39,54 +38,54 @@ describe("Register user", async () => {
     const response2 = await client.register(email, password);
     expect(response2.data.register).toHaveLength(1);
     expect(response2.data.register[0]).toEqual({
-      path: "email",
+      path: 'email',
       message: duplicateEmail
     });
   });
 
-  it("check bad email", async () => {
-    const response3 = await client.register("b", password);
+  it('check bad email', async () => {
+    const response3 = await client.register('b', password);
     expect(response3.data).toEqual({
       register: [
         {
-          path: "email",
+          path: 'email',
           message: emailNotLongEnough
         },
         {
-          path: "email",
+          path: 'email',
           message: invalidEmail
         }
       ]
     });
   });
 
-  it("check bad password", async () => {
+  it('check bad password', async () => {
     // catch bad password
-    const response4 = await client.register(faker.internet.email(), "ad");
+    const response4 = await client.register(faker.internet.email(), 'ad');
     expect(response4.data).toEqual({
       register: [
         {
-          path: "password",
+          path: 'password',
           message: passwordNotLongEnough
         }
       ]
     });
   });
 
-  it("check bad password and bad email", async () => {
-    const response5 = await client.register("df", "ad");
+  it('check bad password and bad email', async () => {
+    const response5 = await client.register('df', 'ad');
     expect(response5.data).toEqual({
       register: [
         {
-          path: "email",
+          path: 'email',
           message: emailNotLongEnough
         },
         {
-          path: "email",
+          path: 'email',
           message: invalidEmail
         },
         {
-          path: "password",
+          path: 'password',
           message: passwordNotLongEnough
         }
       ]
